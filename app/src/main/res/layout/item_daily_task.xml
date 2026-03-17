@@ -42,20 +42,29 @@
             android:layout_marginTop="12dp"
             android:progressDrawable="@android:drawable/progress_horizontal"
             android:progressTint="@color/accent_gold"
-            app:layout_constraintEnd_toStartOf="@+id/iv_check"
+            app:layout_constraintEnd_toStartOf="@+id/layout_status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_task_desc" />
 
-        <ImageView
-            android:id="@+id/iv_check"
+        <FrameLayout
+            android:id="@+id/layout_status"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@android:drawable/checkbox_off_background"
+            android:background="@drawable/bg_status_box"
             app:layout_constraintBottom_toBottomOf="@id/pb_progress"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/pb_progress"
-            app:tint="@color/text_secondary" />
+            app:layout_constraintTop_toTopOf="@id/pb_progress">
+
+            <ImageView
+                android:id="@+id/iv_check"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:src="@drawable/ic_check_tick"
+                app:tint="@color/green_complete"
+                android:visibility="gone"/>
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

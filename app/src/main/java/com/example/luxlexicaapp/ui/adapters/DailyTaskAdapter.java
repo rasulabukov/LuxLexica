@@ -1,6 +1,7 @@
 package com.example.luxlexicaapp.ui.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -52,12 +53,8 @@ public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.Task
             binding.tvReward.setText("+" + task.rewardExperience + " XP");
             binding.pbProgress.setMax(task.targetValue);
             binding.pbProgress.setProgress(task.currentValue);
-            
-            if (task.isCompleted) {
-                binding.ivCheck.setImageResource(android.R.drawable.checkbox_on_background);
-            } else {
-                binding.ivCheck.setImageResource(android.R.drawable.checkbox_off_background);
-            }
+
+            binding.ivCheck.setVisibility(task.isCompleted ? View.VISIBLE : View.GONE);
         }
     }
 }

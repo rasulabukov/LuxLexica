@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/dark_blue_surface"
+    app:cardCornerRadius="16dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_avatar_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"/>
+
+        <TextView
+            android:id="@+id/tv_time_ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 ч назад"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_user_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_user_name"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Message content goes here..."
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

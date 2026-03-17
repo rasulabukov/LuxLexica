@@ -33,16 +33,12 @@ public class DataInitializer {
 
             seedDailyTasks(db);
 
-            db.userDao().insert(createMockUser("Alice", 1500, 5));
-            db.userDao().insert(createMockUser("Bob", 1200, 3));
-            db.userDao().insert(createMockUser("Charlie", 2500, 10));
-            db.userDao().insert(createMockUser("Diana", 1800, 4));
-            db.userDao().insert(createMockUser("Ethan", 950, 2));
-            db.userDao().insert(createMockUser("Fiona", 2100, 8));
-            db.userDao().insert(createMockUser("George", 1350, 6));
-            db.userDao().insert(createMockUser("Hannah", 1100, 1));
-            db.userDao().insert(createMockUser("Ivan", 1650, 7));
-            db.userDao().insert(createMockUser("Julia", 1400, 3));
+            db.userDao().insert(createMockUser("Мария К.", 1500, 5));
+            db.userDao().insert(createMockUser("Алексей В.", 1200, 3));
+            db.userDao().insert(createMockUser("Александр П.", 2500, 10));
+            db.userDao().insert(createMockUser("Ольга С.", 1800, 4));
+            db.userDao().insert(createMockUser("Елена П.", 950, 2));
+
         });
     }
 

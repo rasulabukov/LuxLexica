@@ -77,13 +77,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         public void bind(Module module, boolean isCompleted, OnModuleClickListener listener) {
             binding.tvModuleName.setText(module.name);
             binding.tvModuleDesc.setText(module.description);
-            
-            if (isCompleted) {
-                binding.ivStatus.setImageResource(android.R.drawable.checkbox_on_background);
-                binding.ivStatus.setVisibility(View.VISIBLE);
-            } else {
-                binding.ivStatus.setVisibility(View.GONE);
-            }
+
+            binding.ivStatus.setVisibility(isCompleted ? View.VISIBLE : View.GONE);
             
             itemView.setOnClickListener(v -> listener.onModuleClick(module));
         }
