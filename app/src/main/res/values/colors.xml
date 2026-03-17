@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <color name="dark_blue_bg">#0D1B2A</color>
+    <color name="dark_blue_surface">#1B263B</color>
+    <color name="gold">#E0E1DD</color>
+    <color name="accent_gold">#F5CB5C</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#778DA9</color>
+    
+    <color name="button_bg">#415A77</color>
+    <color name="button_ripple">#778DA9</color>
+    <color name="green_complete">#4CAF50</color>
+</resources>

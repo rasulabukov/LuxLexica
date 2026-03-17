@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.luxlexicaapp.ui.StartFragment"
+        android:title="Start"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_lessonsFragment"
+            app:destination="@id/navigation_lessons"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_startFragment_to_aboutAuthorFragment"
+            app:destination="@id/aboutAuthorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/aboutAuthorFragment"
+        android:name="com.example.luxlexicaapp.ui.AboutAuthorFragment"
+        android:title="About Author"
+        tools:layout="@layout/fragment_about_author" />
+
+    <fragment
+        android:id="@+id/navigation_lessons"
+        android:name="com.example.luxlexicaapp.ui.LessonsFragment"
+        android:title="Lessons"
+        tools:layout="@layout/fragment_lessons">
+        <action
+            android:id="@+id/action_lessonsFragment_to_moduleFragment"
+            app:destination="@id/moduleFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_community"
+        android:name="com.example.luxlexicaapp.ui.CommunityFragment"
+        android:title="Community"
+        tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/navigation_daily_tasks"
+        android:name="com.example.luxlexicaapp.ui.DailyTasksFragment"
+        android:title="Daily Tasks"
+        tools:layout="@layout/fragment_daily_tasks" />
+
+    <fragment
+        android:id="@+id/navigation_leaders"
+        android:name="com.example.luxlexicaapp.ui.LeadersFragment"
+        android:title="Leaders"
+        tools:layout="@layout/fragment_leaders" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.luxlexicaapp.ui.ProfileFragment"
+        android:title="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/moduleFragment"
+        android:name="com.example.luxlexicaapp.ui.ModuleFragment"
+        android:title="Module"
+        tools:layout="@layout/fragment_module">
+        <argument
+            android:name="moduleId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

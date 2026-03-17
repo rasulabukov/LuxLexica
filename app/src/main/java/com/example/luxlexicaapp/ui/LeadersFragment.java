@@ -1,0 +1,51 @@
+package com.example.luxlexicaapp.ui;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.luxlexicaapp.databinding.FragmentLeadersBinding;
+import com.example.luxlexicaapp.ui.adapters.UserAdapter;
+
+public class LeadersFragment extends Fragment {
+
+    private FragmentLeadersBinding binding;
+    private MainViewModel viewModel;
+    private UserAdapter adapter;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentLeadersBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        adapter = new UserAdapter(true);
+        binding.rvLeaders.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvLeaders.setAdapter(adapter);
+
+        viewModel.getAllUsersByExperience().observe(getViewLifecycleOwner(), users -> {
+            if (users != null) {
+                adapter.setUsers(users);
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+}

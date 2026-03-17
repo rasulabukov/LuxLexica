@@ -1,0 +1,49 @@
+{
+  "languages": [
+    {"code": "en", "name": "English"},
+    {"code": "es", "name": "Español"},
+    {"code": "pt", "name": "Português"}
+  ],
+  "levels": [
+    {"code": "A1"},
+    {"code": "A2"},
+    {"code": "B1"},
+    {"code": "B2"},
+    {"code": "C1"}
+  ],
+  "achievements": [
+    {"title": "Новичок", "description": "Пройдено 5 уроков", "condition": "lessons_5", "iconName": "ic_award_beginner"},
+    {"title": "Эрудит", "description": "50 правильных ответов", "condition": "correct_50", "iconName": "ic_award_erudite"},
+    {"title": "Постоянство", "description": "Стрик 7 дней", "condition": "streak_7", "iconName": "ic_award_streak"}
+  ],
+  "modules": [
+    {
+      "languageCode": "en",
+      "levelCode": "A1",
+      "name": "Basics 1",
+      "description": "Learn basic greetings and introductions.",
+      "lesson": "Hello! My name is... Welcome to English A1.",
+      "test": {
+        "questions": [
+          {
+            "question": "How do you say 'Hello' in a formal way?",
+            "options": ["Hi", "Hello", "Yo", "Hey"],
+            "correctIndex": 1
+          },
+          {
+            "question": "What is the response to 'How are you?'",
+            "options": ["I am fine", "Green", "Yes", "Table"],
+            "correctIndex": 0
+          }
+        ]
+      }
+    }
+  ],
+  "mock_users": [
+    {"name": "Alice", "experience": 1500, "streak": 5},
+    {"name": "Bob", "experience": 1200, "streak": 3},
+    {"name": "Charlie", "experience": 900, "streak": 10},
+    {"name": "Diana", "experience": 850, "streak": 2},
+    {"name": "Ethan", "experience": 700, "streak": 1}
+  ]
+}
