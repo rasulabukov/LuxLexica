@@ -18,6 +18,7 @@ public class TheoryFragment extends Fragment {
     private FragmentModuleTheoryBinding binding;
     private int moduleId;
     private MainViewModel viewModel;
+    private boolean isTheoryUpdated = false;
 
     public static TheoryFragment newInstance(int moduleId) {
         TheoryFragment fragment = new TheoryFragment();
@@ -46,7 +47,10 @@ public class TheoryFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), lesson -> {
                     if (lesson != null) {
                         binding.tvTheoryContent.setText(lesson.content);
-                        viewModel.updateDailyTaskProgress("THEORY", 1);
+                        if (!isTheoryUpdated) {
+                            viewModel.updateDailyTaskProgress("THEORY", 1);
+                            isTheoryUpdated = true;
+                        }
                     }
                 });
     }

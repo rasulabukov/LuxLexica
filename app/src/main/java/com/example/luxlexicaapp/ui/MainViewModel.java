@@ -12,8 +12,10 @@ import androidx.lifecycle.Transformations;
 import com.example.luxlexicaapp.data.AppDatabase;
 import com.example.luxlexicaapp.data.entities.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainViewModel extends AndroidViewModel {
@@ -22,6 +24,10 @@ public class MainViewModel extends AndroidViewModel {
     private final LiveData<User> mainUser;
     private final MutableLiveData<Integer> selectedLanguageId = new MutableLiveData<>(1);
     private final MutableLiveData<Integer> selectedLevelId = new MutableLiveData<>(1);
+
+    private final Set<Integer> languagesUsedToday = new HashSet<>();
+    private final Map<Integer, Integer> lessonsCountPerLanguageToday = new HashMap<>();
+    private final Set<String> activitiesToday = new HashSet<>();
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -51,6 +57,9 @@ public class MainViewModel extends AndroidViewModel {
 
             long lastReset = tasks.get(0).lastResetDate;
             if (!DateUtils.isToday(lastReset)) {
+                languagesUsedToday.clear();
+                lessonsCountPerLanguageToday.clear();
+                activitiesToday.clear();
                 for (DailyTask task : tasks) {
                     task.currentValue = 0;
                     task.isCompleted = false;
@@ -67,42 +76,94 @@ public class MainViewModel extends AndroidViewModel {
             User user = db.userDao().getMainUserSync();
             if (user == null) return;
 
+            Integer currentLangId = selectedLanguageId.getValue();
             boolean userUpdated = false;
+
+            if (type.equals("LESSON_COMPLETED") && currentLangId != null) {
+                languagesUsedToday.add(currentLangId);
+                int count = lessonsCountPerLanguageToday.getOrDefault(currentLangId, 0) + increment;
+                lessonsCountPerLanguageToday.put(currentLangId, count);
+            } else if (type.equals("THEORY") || type.equals("PRACTICE") || type.equals("TEST")) {
+                activitiesToday.add(type);
+            }
 
             for (DailyTask task : tasks) {
                 if (task.isCompleted) continue;
 
-                boolean shouldUpdate = false;
+                boolean shouldIncrement = false;
+                int customIncrement = increment;
+
                 switch (task.conditionType) {
                     case "LOGIN":
-                        if (type.equals("LOGIN")) shouldUpdate = true;
+                        if (type.equals("LOGIN")) shouldIncrement = true;
                         break;
                     case "ANY_LESSON":
-                        if (type.equals("THEORY") || type.equals("PRACTICE") || type.equals("TEST")) shouldUpdate = true;
+                        if (type.equals("LESSON_COMPLETED")) shouldIncrement = true;
                         break;
                     case "PRACTICE":
-                        if (type.equals("PRACTICE")) shouldUpdate = true;
+                        if (type.equals("PRACTICE")) shouldIncrement = true;
                         break;
                     case "TEST":
-                        if (type.equals("TEST")) shouldUpdate = true;
+                        if (type.equals("TEST")) shouldIncrement = true;
                         break;
                     case "THEORY":
-                        if (type.equals("THEORY")) shouldUpdate = true;
+                        if (type.equals("THEORY")) shouldIncrement = true;
                         break;
                     case "TOTAL_5":
-                        if (type.equals("THEORY") || type.equals("PRACTICE") || type.equals("TEST")) shouldUpdate = true;
+                        if (type.equals("LESSON_COMPLETED")) shouldIncrement = true;
                         break;
                     case "LANG_2":
+                        if (type.equals("LESSON_COMPLETED")) {
+                            task.currentValue = languagesUsedToday.size();
+                            if (task.currentValue >= task.targetValue) {
+                                task.isCompleted = true;
+                                user.experience += task.rewardExperience;
+                                userUpdated = true;
+                            }
+                            db.dailyTaskDao().update(task);
+                        }
+                        continue;
                     case "FOCUS_1":
+                        if (type.equals("LESSON_COMPLETED")) {
+                            int maxInOneLang = 0;
+                            for (int count : lessonsCountPerLanguageToday.values()) {
+                                if (count > maxInOneLang) maxInOneLang = count;
+                            }
+                            task.currentValue = Math.min(maxInOneLang, task.targetValue);
+                            if (task.currentValue >= task.targetValue) {
+                                task.isCompleted = true;
+                                user.experience += task.rewardExperience;
+                                userUpdated = true;
+                            }
+                            db.dailyTaskDao().update(task);
+                        }
+                        continue;
                     case "ALL_LANGS":
+                        if (type.equals("LESSON_COMPLETED")) {
+                            task.currentValue = languagesUsedToday.size();
+                            if (task.currentValue >= task.targetValue) {
+                                task.isCompleted = true;
+                                user.experience += task.rewardExperience;
+                                userUpdated = true;
+                            }
+                            db.dailyTaskDao().update(task);
+                        }
+                        continue;
                     case "HARMONY":
-                        // These require complex tracking, handled via helper
-                        updateComplexTask(task, type);
-                        break;
+                        if (type.equals("THEORY") || type.equals("PRACTICE") || type.equals("TEST")) {
+                            task.currentValue = activitiesToday.size();
+                            if (task.currentValue >= task.targetValue) {
+                                task.isCompleted = true;
+                                user.experience += task.rewardExperience;
+                                userUpdated = true;
+                            }
+                            db.dailyTaskDao().update(task);
+                        }
+                        continue;
                 }
 
-                if (shouldUpdate) {
-                    task.currentValue += increment;
+                if (shouldIncrement) {
+                    task.currentValue += customIncrement;
                     if (task.currentValue >= task.targetValue) {
                         task.currentValue = task.targetValue;
                         task.isCompleted = true;
@@ -114,18 +175,6 @@ public class MainViewModel extends AndroidViewModel {
             }
             if (userUpdated) db.userDao().update(user);
         });
-    }
-
-    private void updateComplexTask(DailyTask task, String type) {
-        task.currentValue += 1; 
-        if (task.currentValue >= task.targetValue) {
-            task.currentValue = task.targetValue;
-            task.isCompleted = true;
-            User user = db.userDao().getMainUserSync();
-            user.experience += task.rewardExperience;
-            db.userDao().update(user);
-        }
-        db.dailyTaskDao().update(task);
     }
 
     public LiveData<List<Language>> getLanguages() {

@@ -59,6 +59,18 @@ public class PracticeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         
         AppDatabase db = AppDatabase.getDatabase(requireContext());
+
+        // Check progress to disable if already completed
+        db.appDao().getUserProgress(1, moduleId).observe(getViewLifecycleOwner(), progress -> {
+            if (progress != null && progress.isPracticeCompleted) {
+                binding.btnPracticeNext.setEnabled(false);
+                binding.btnPracticeNext.setText("Практика пройдена");
+                binding.btnPracticeNext.setVisibility(View.VISIBLE);
+                // Optionally disable options selection too
+                binding.layoutPracticeOptions.setEnabled(false);
+            }
+        });
+
         db.appDao().getPracticeByModule(moduleId).observe(getViewLifecycleOwner(), qList -> {
             if (qList != null && !qList.isEmpty()) {
                 questions = qList;

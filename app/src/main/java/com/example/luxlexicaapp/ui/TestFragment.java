@@ -61,6 +61,17 @@ public class TestFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         AppDatabase db = AppDatabase.getDatabase(requireContext());
+
+        // Check progress to disable if already completed
+        db.appDao().getUserProgress(1, moduleId).observe(getViewLifecycleOwner(), progress -> {
+            if (progress != null && progress.isTestCompleted) {
+                binding.btnNext.setEnabled(false);
+                binding.btnNext.setText("Тест уже пройден");
+                binding.btnNext.setVisibility(View.VISIBLE);
+                binding.layoutOptions.setEnabled(false);
+            }
+        });
+
         db.appDao().getTestByModule(moduleId).observe(getViewLifecycleOwner(), test -> {
             if (test != null) {
                 db.appDao().getQuestionsByTest(test.id).observe(getViewLifecycleOwner(), qList -> {
@@ -155,6 +166,8 @@ public class TestFragment extends Fragment {
                     }
                 }
                 viewModel.updateDailyTaskProgress("TEST", 1);
+
+                viewModel.updateDailyTaskProgress("LESSON_COMPLETED", 1);
             }
             db.appDao().insertUserProgress(progress);
         });
